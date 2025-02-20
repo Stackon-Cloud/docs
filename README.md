@@ -35,7 +35,7 @@ For more detailed information on how to use Stack on Cloud, please refer to our 
 
 Stay updated with the latest news and developments:
 
-- Blog: [@StackonCloud](https://stackon.cloud/blog)
+- Blog: [StackonCloud Blog](https://stackon.cloud/blog)
 
 ## License
 
