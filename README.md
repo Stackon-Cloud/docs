@@ -107,7 +107,7 @@ Monitor your database and API usage:
 - Blog: [Stack on Cloud Blog](https://stackon.cloud/blog)
 - GitHub: [Stack on Cloud GitHub](https://github.com/Stackon-Cloud)
 - Documentation: [https://stackon.cloud/documentation](https://stackon.cloud/documentation)
-- Example project: [Stack on Cloud API Client Example](https://github.com/Stackon-Cloud/docs/example)
+- Example project: [Stack on Cloud API Client Example](https://github.com/Stackon-Cloud/docs/tree/main/example)
 
 ## License
 
