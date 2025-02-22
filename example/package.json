@@ -1,0 +1,22 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "description": "Example usage of the Stack on Cloud API client",
+  "main": "dist/example.js",
+  "scripts": {
+    "api:generate-client": "openapi-generator-cli generate -i openapi.spec.json -c openapi-config.yaml -o src/lib/api",
+    "build": "tsc",
+    "start": "tsc && node dist/example.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@openapitools/openapi-generator-cli": "^2.16.3",
+    "axios": "^1.6.1",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3"
+  }
+}

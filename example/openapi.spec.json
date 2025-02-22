@@ -1,0 +1,423 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "users API",
+    "description": "API for managing data in the users database",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.stackon.cloud/api/v1",
+      "description": "API Server"
+    }
+  ],
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key"
+      }
+    },
+    "schemas": {
+      "profile": {
+        "type": "object",
+        "description": "",
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "(Unique value required) (Primary key)"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 255
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "profileList": {
+        "type": "object",
+        "description": "Paginated list of profile records",
+        "properties": {
+          "columns": {
+            "type": "array",
+            "description": "Metadata about table columns",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Column name"
+                },
+                "dataType": {
+                  "type": "string",
+                  "description": "Data type of the column",
+                  "enum": [
+                    "TEXT",
+                    "INTEGER",
+                    "BIGINT",
+                    "DECIMAL",
+                    "BOOLEAN",
+                    "DATE",
+                    "TIMESTAMP",
+                    "JSON"
+                  ]
+                },
+                "nullable": {
+                  "type": "boolean",
+                  "description": "Whether the column allows null values"
+                }
+              },
+              "required": [
+                "name",
+                "dataType",
+                "nullable"
+              ]
+            }
+          },
+          "rows": {
+            "type": "array",
+            "description": "List of records",
+            "example": [
+              {
+                "id": "Sample id",
+                "name": "Sample name"
+              }
+            ],
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "String representation of id",
+                  "example": "Sample text"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "String representation of name",
+                  "example": "Sample text"
+                }
+              }
+            }
+          },
+          "pagination": {
+            "type": "object",
+            "description": "Pagination information",
+            "properties": {
+              "pageNumber": {
+                "type": "integer",
+                "description": "Current page number (0-based)",
+                "example": 0
+              },
+              "pageSize": {
+                "type": "integer",
+                "description": "Number of items per page",
+                "example": 50
+              },
+              "totalElements": {
+                "type": "integer",
+                "description": "Total number of elements across all pages",
+                "example": 100
+              },
+              "totalPages": {
+                "type": "integer",
+                "description": "Total number of pages",
+                "example": 2
+              },
+              "hasNext": {
+                "type": "boolean",
+                "description": "Whether there is a next page",
+                "example": true
+              },
+              "hasPrevious": {
+                "type": "boolean",
+                "description": "Whether there is a previous page",
+                "example": false
+              },
+              "sort": {
+                "type": "array",
+                "description": "Sort criteria used in the query (e.g. ['field1:asc', 'field2:desc'])",
+                "example": [
+                  "field1:asc",
+                  "field2:desc"
+                ],
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9_]+:(asc|desc)$"
+                }
+              }
+            },
+            "required": [
+              "pageNumber",
+              "pageSize",
+              "totalElements",
+              "totalPages",
+              "hasNext",
+              "hasPrevious"
+            ]
+          }
+        },
+        "required": [
+          "columns",
+          "rows",
+          "pagination"
+        ]
+      }
+    }
+  },
+  "paths": {
+    "/project/04b7c85c-0d15-4673-b063-b18826611d57/database/b7ab4855-9bf2-496d-9fe0-186a12211c39/table/5dfa54f1-17d5-4de5-ac3d-721fe6ae76b1/data": {
+      "get": {
+        "summary": "List profile records",
+        "description": "Retrieves a paginated list of records from the profile table",
+        "operationId": "listProfile",
+        "tags": [
+          "profile"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page number",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Page size (max 1000)",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "minimum": 1,
+              "maximum": 1000
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort field and direction (e.g. field1:asc,field2:desc)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "field1:asc,field2:desc"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Filter by id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Filter by name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/profileList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters or page size exceeds maximum"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new profile record",
+        "description": "Creates a new record in the profile table",
+        "operationId": "createProfile",
+        "tags": [
+          "profile"
+        ],
+        "requestBody": {
+          "description": "profile record to create",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/profile"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Record created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/profile"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key"
+          },
+          "409": {
+            "description": "Conflict - A record with unique values already exists"
+          }
+        }
+      }
+    },
+    "/project/04b7c85c-0d15-4673-b063-b18826611d57/database/b7ab4855-9bf2-496d-9fe0-186a12211c39/table/5dfa54f1-17d5-4de5-ac3d-721fe6ae76b1/data/{id}": {
+      "get": {
+        "summary": "Get a profile record by ID",
+        "description": "Retrieves a single record from the profile table by its ID",
+        "operationId": "getProfileById",
+        "tags": [
+          "profile"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Primary key value of the record to retrieve",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/profile"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key"
+          },
+          "404": {
+            "description": "Record not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a profile record",
+        "description": "Updates an existing record in the profile table",
+        "operationId": "updateProfile",
+        "tags": [
+          "profile"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Primary key value of the record to update",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Updated profile record",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/profile"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Record updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/profile"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key"
+          },
+          "404": {
+            "description": "Record not found"
+          },
+          "409": {
+            "description": "Conflict - A record with unique values already exists"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a profile record",
+        "description": "Deletes a record from the profile table",
+        "operationId": "deleteProfile",
+        "tags": [
+          "profile"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Primary key value of the record to delete",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Record deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key"
+          },
+          "403": {
+            "description": "Forbidden - Cannot delete this record due to constraints or permissions"
+          },
+          "404": {
+            "description": "Record not found"
+          }
+        }
+      }
+    }
+  }
+}

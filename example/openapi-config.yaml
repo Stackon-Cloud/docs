@@ -1,0 +1,15 @@
+# openapi-config.yaml
+generatorName: typescript-axios
+additionalProperties:
+  apiPackage: apis
+  modelPackage: models
+  modelPropertyNaming: original
+  supportsES6: true
+  npmName: "@myapi/client"
+  npmVersion: "1.0.0"
+  typescriptThreePlus: true
+  prefixParameterInterfaces: true
+  apiNameSuffix: "Api"
+  modelNamePrefix: "Api"
+  withSeparateModelsAndApi: true
+  withInterfaces: true
